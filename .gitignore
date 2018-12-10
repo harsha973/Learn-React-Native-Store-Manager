@@ -49,8 +49,10 @@ local.properties
 /android/out/
 /android/.gradle/
 /android/build/
-.idea/*
-idea/*
+/android/app/build/
+/android/gradle/
+/android/gradlew
+/android/gradlew.bat
 #/android/
 
 # Node
