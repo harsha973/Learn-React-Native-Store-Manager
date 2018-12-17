@@ -1,10 +1,23 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Picker, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { CardSection, Input, Button } from './common';
 import { employeeUpdated } from '../actions';
 
 class CreateEmployee extends Component {
+
+  pickerItems() {
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const values = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    return values.map((value, index) =>
+      <Picker.Item
+        key={index}
+        label={days[index]}
+        value={value}
+      />
+    );
+  }
+
   render() {
     return (
       <View>
@@ -26,6 +39,16 @@ class CreateEmployee extends Component {
           />
         </CardSection>
 
+        <CardSection style={styles.pickerContainerStyle}>
+          <Text style={styles.pickerLabelStyle}>Shift</Text>
+          <Picker
+            style={styles.pickerStyle}
+            selectedValue={this.props.shift}
+            onValueChange={value => this.props.employeeUpdated({ prop: 'shift', value })}
+          >
+            {this.pickerItems()}
+          </Picker>
+        </CardSection>
         <CardSection>
           <Button>Create</Button>
         </CardSection>
@@ -33,6 +56,22 @@ class CreateEmployee extends Component {
     );
   }
 }
+
+const styles = {
+  pickerLabelStyle: {
+    fontSize: 18,
+    paddingLeft: 20,
+    flex: 1,
+    alignSelf: 'center'
+  },
+  pickerContainerStyle: {
+     flexDirection: 'row',
+     justifyContent: 'center'
+  },
+  pickerStyle: {
+    flex: 2
+  }
+};
 
 const mapStateToProps = state => {
   const { name, phone, shift } = state.employee;
