@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Picker, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { CardSection, Input, Button } from './common';
+import { CardSection, Input, Button, Spinner } from './common';
 import { employeeUpdated, createEmployee } from '../actions';
 
 class CreateEmployee extends Component {
@@ -18,9 +18,24 @@ class CreateEmployee extends Component {
     );
   }
 
+  createUserButton() {
+    return (
+      <Button onPress={this.createUser.bind(this)}>
+      Create
+      </Button>);
+  }
+
   createUser() {
     const { name, phone, shift } = this.props;
     this.props.createEmployee({ name, phone, shift: shift || 'Monday' });
+  }
+
+  createUserButtonorProgress() {
+    const { loading } = this.props;
+    if (loading) {
+      return (<Spinner size='large' />);
+    }
+    return (this.createUserButton());
   }
 
   render() {
@@ -54,12 +69,9 @@ class CreateEmployee extends Component {
             {this.pickerItems()}
           </Picker>
         </CardSection>
+
         <CardSection>
-          <Button
-            onPress={this.createUser.bind(this)}
-          >
-          Create
-          </Button>
+          {this.createUserButtonorProgress()}
         </CardSection>
       </View>
     );
@@ -83,8 +95,8 @@ const styles = {
 };
 
 const mapStateToProps = state => {
-  const { name, phone, shift } = state.employee;
-  return { name, phone, shift };
+  const { name, phone, shift, loading } = state.employee;
+  return { name, phone, shift, loading };
 };
 
 export default connect(mapStateToProps, { employeeUpdated, createEmployee })(CreateEmployee);
