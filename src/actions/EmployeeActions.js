@@ -7,7 +7,9 @@ import {
   EMPLOYEE_CREATED,
   CREATE_EMPLOYEE,
   EMPLOYEES_FETCHED_SUCCESSFULLY,
-  EMPLOYEES_FETCH_STARTED
+  EMPLOYEES_FETCH_STARTED,
+  EMPLOYEE_SAVED_SUCCESFULLY,
+  EMPLOYEE_SAVE_STARTED
 } from '../types';
 
 export const employeeUpdated = ({ prop, value }) => ({
@@ -35,6 +37,19 @@ export const fetchEmployees = () => {
     firebase.database().ref(`users/${currentUser.uid}/employees`)
       .on('value', snapshot => {
         dispatch({ type: EMPLOYEES_FETCHED_SUCCESSFULLY, payload: snapshot.val() });
+      });
+  });
+};
+
+export const saveEmployee = ({ name, phone, shift, uid }) => {
+  return ((dispatch) => {
+    dispatch({ type: EMPLOYEE_SAVE_STARTED });
+    const { currentUser } = firebase.auth();
+    firebase.database().ref(`users/${currentUser.uid}/employees/${uid}`)
+      .set({ name, phone, shift })
+      .then(() => {
+        Actions.pop();
+        dispatch({ type: EMPLOYEE_SAVED_SUCCESFULLY });
       });
   });
 };

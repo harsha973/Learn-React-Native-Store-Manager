@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
 class EmployeeListItem extends Component {
+
+  rowClicked() {
+    Actions.editEmployee({ employee: this.props.item });
+  }
+
   render() {
       const employee = this.props.item;
       return (
+        <TouchableOpacity onPress={this.rowClicked.bind(this)}>
           <View style={styles.containerStyle}>
             <Text style={styles.textStyle}>{employee.name}</Text>
           </View>
+        </TouchableOpacity>
       );
   }
 }

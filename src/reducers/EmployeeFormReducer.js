@@ -1,7 +1,9 @@
 import {
   EMPLOYEE_UPDATED,
   EMPLOYEE_CREATED,
-  CREATE_EMPLOYEE }
+  CREATE_EMPLOYEE,
+  EMPLOYEE_SAVED_SUCCESFULLY,
+  EMPLOYEE_SAVE_STARTED }
  from '../types';
 
 const initialState = {
@@ -14,11 +16,12 @@ const initialState = {
 export default (state = initialState, action) => {
     switch (action.type) {
       case EMPLOYEE_UPDATED:
-        console.log('prop is', action.payload.prop, 'value is', action.payload.value);
         return { ...state, [action.payload.prop]: action.payload.value };
       case CREATE_EMPLOYEE:
+      case EMPLOYEE_SAVE_STARTED:
         return { ...state, loading: true };
       case EMPLOYEE_CREATED:
+      case EMPLOYEE_SAVED_SUCCESFULLY:
         return initialState;
       default:
         return state;
