@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import { CardSection } from './common';
 
 class EmployeeListItem extends Component {
 
@@ -12,9 +13,9 @@ class EmployeeListItem extends Component {
       const employee = this.props.item;
       return (
         <TouchableOpacity onPress={this.rowClicked.bind(this)}>
-          <View style={styles.containerStyle}>
+          <CardSection>
             <Text style={styles.textStyle}>{employee.name}</Text>
-          </View>
+          </CardSection>
         </TouchableOpacity>
       );
   }
@@ -23,14 +24,7 @@ class EmployeeListItem extends Component {
 const styles = {
   textStyle: {
     fontSize: 18,
-    paddingLeft: 15,
-    paddingTop: 5,
-    paddingBottom: 5
-  },
-  containerStyle: {
-    backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderColor: '#ddd'
+    paddingLeft: 15
   }
 };
 
