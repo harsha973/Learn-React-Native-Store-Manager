@@ -1,19 +1,58 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { FlatList, View } from 'react-native';
+import _ from 'lodash';
+import { connect } from 'react-redux';
+import { fetchEmployees } from '../actions';
+import EmployeeListItem from './EmployeeListItem';
+import { Spinner } from './common';
 
 class EmployeeList extends Component {
 
-  render() {
+  componentWillMount() {
+    this.props.fetchEmployees();
+  }
+
+  renderItem({ item }) {
+    return <EmployeeListItem item={item} />;
+  }
+
+  renderFlatList() {
+    return (<FlatList
+      data={this.props.employees}
+      renderItem={this.renderItem.bind(this)}
+      keyExtractor={(item) => item.uid}
+    />);
+  }
+
+  renderSpinner() {
     return (
-      <View>
-        <Text>Employee 1</Text>
-        <Text>Employee 2</Text>
-        <Text>Employee 3</Text>
-        <Text>Employee 4</Text>
-        <Text>Employee 5</Text>
+      <View style={styles.spinnerContainerStyle}>
+        <Spinner size='large' />
       </View>
     );
   }
+
+  renderContent() {
+    if (this.props.loading) {
+      return this.renderSpinner();
+    }
+    return this.renderFlatList();
+  }
+
+  render() { return this.renderContent(); }
 }
 
-export default EmployeeList;
+const styles = {
+  spinnerContainerStyle: {
+    justifyContent: 'center',
+    flex: 1
+  }
+};
+
+const mapStateToProps = state => {
+    const employees = _.map(state.employee.employees, (val, uid) => ({ ...val, uid }));
+    const { loading } = state.employee;
+    return { employees, loading };
+};
+
+export default connect(mapStateToProps, { fetchEmployees })(EmployeeList);

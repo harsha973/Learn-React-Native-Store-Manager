@@ -1,26 +1,21 @@
 import {
-  EMPLOYEE_UPDATED,
-  EMPLOYEE_CREATED,
-  CREATE_EMPLOYEE }
- from '../types';
+  EMPLOYEES_FETCHED_SUCCESSFULLY,
+  EMPLOYEES_FETCH_STARTED }
+from '../types';
 
 const initialState = {
-  name: '',
-  phoneNumber: '',
-  shift: '',
+  employees: null,
   loading: false
 };
 
-export default (state = initialState, action) => {
-    switch (action.type) {
-      case EMPLOYEE_UPDATED:
-        console.log('prop is', action.payload.prop, 'value is', action.payload.value);
-        return { ...state, [action.payload.prop]: action.payload.value };
-      case CREATE_EMPLOYEE:
-        return { ...state, loading: true };
-      case EMPLOYEE_CREATED:
-        return initialState;
-      default:
-        return state;
-    }
+export default (state = initialState, actions) => {
+  switch (actions.type) {
+    case EMPLOYEES_FETCHED_SUCCESSFULLY:
+      console.log(actions.payload);
+      return { employees: actions.payload, loading: false };
+    case EMPLOYEES_FETCH_STARTED:
+      return { ...state, loading: true };
+    default:
+      return state;
+  }
 };

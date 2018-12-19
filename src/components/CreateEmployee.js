@@ -95,7 +95,7 @@ const styles = {
 };
 
 const mapStateToProps = state => {
-  const { name, phone, shift, loading } = state.employee;
+  const { name, phone, shift, loading } = state.employeeForm;
   return { name, phone, shift, loading };
 };
 

@@ -5,7 +5,9 @@ import '@firebase/database';
 import {
   EMPLOYEE_UPDATED,
   EMPLOYEE_CREATED,
-  CREATE_EMPLOYEE
+  CREATE_EMPLOYEE,
+  EMPLOYEES_FETCHED_SUCCESSFULLY,
+  EMPLOYEES_FETCH_STARTED
 } from '../types';
 
 export const employeeUpdated = ({ prop, value }) => ({
@@ -22,6 +24,17 @@ export const createEmployee = ({ name, phone, shift }) => {
       .then(() => {
           Actions.pop();
           dispatch({ type: EMPLOYEE_CREATED });
+      });
+  });
+};
+
+export const fetchEmployees = () => {
+  const { currentUser } = firebase.auth();
+  return ((dispatch) => {
+    dispatch({ type: EMPLOYEES_FETCH_STARTED });
+    firebase.database().ref(`users/${currentUser.uid}/employees`)
+      .on('value', snapshot => {
+        dispatch({ type: EMPLOYEES_FETCHED_SUCCESSFULLY, payload: snapshot.val() });
       });
   });
 };
