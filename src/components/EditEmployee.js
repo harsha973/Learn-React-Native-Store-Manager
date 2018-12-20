@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import Communications from 'react-native-communications';
 import _ from 'lodash';
 import EmployeeForm from './EmployeeForm';
-import { Button, CardSection, Spinner } from './common';
-import { saveEmployee, employeeUpdated } from '../actions';
+import { Button, CardSection, Spinner, Confirm } from './common';
+import { saveEmployee, employeeUpdated, removeEmployee } from '../actions';
 
 class EditEmployee extends Component {
+  state= { showFireModal: false };
 
   componentWillMount() {
       _.each(this.props.employee, (value, prop) => {
@@ -18,6 +19,11 @@ class EditEmployee extends Component {
   onTextEmployee() {
     const { phone, shift } = this.props;
     Communications.text(phone, `Your upcoming shift is on ${shift}`);
+  }
+
+  onFired() {
+    this.setState({ showFireModal: false });
+    this.props.removeEmployee({ employeeUid: this.props.employee.uid });
   }
 
   savePressed() {
@@ -41,6 +47,16 @@ class EditEmployee extends Component {
     );
   }
 
+  renderFireEmployeeSection() {
+    return (
+      <CardSection>
+        <Button onPress={() => { this.setState({ showFireModal: true }); }}>
+          Fire Employee
+        </Button>
+      </CardSection>
+    );
+  }
+
   render() {
     return (
       <View>
@@ -51,6 +67,15 @@ class EditEmployee extends Component {
         </CardSection>
 
         {this.renderTextEmployeeSection()}
+        {this.renderFireEmployeeSection()}
+
+        <Confirm
+          visible={this.state.showFireModal}
+          onAccept={this.onFired.bind(this)}
+          onDecline={() => { this.setState({ showFireModal: false }); }}
+        >
+          Are you sure you want to fire the employee?
+        </Confirm>
       </View>
     );
   }
@@ -61,4 +86,5 @@ const mapStateToProps = state => {
     return { name, phone, shift, loading };
 };
 
-export default connect(mapStateToProps, { employeeUpdated, saveEmployee })(EditEmployee);
+export default connect(mapStateToProps,
+  { employeeUpdated, saveEmployee, removeEmployee })(EditEmployee);

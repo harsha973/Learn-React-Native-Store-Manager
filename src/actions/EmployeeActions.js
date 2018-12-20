@@ -41,15 +41,20 @@ export const fetchEmployees = () => {
   });
 };
 
-export const saveEmployee = ({ name, phone, shift, uid }) => {
-  return ((dispatch) => {
-    dispatch({ type: EMPLOYEE_SAVE_STARTED });
-    const { currentUser } = firebase.auth();
-    firebase.database().ref(`users/${currentUser.uid}/employees/${uid}`)
-      .set({ name, phone, shift })
-      .then(() => {
-        Actions.pop();
-        dispatch({ type: EMPLOYEE_SAVED_SUCCESFULLY });
-      });
-  });
-};
+export const saveEmployee = ({ name, phone, shift, uid }) => ((dispatch) => {
+  dispatch({ type: EMPLOYEE_SAVE_STARTED });
+  const { currentUser } = firebase.auth();
+  firebase.database().ref(`users/${currentUser.uid}/employees/${uid}`)
+    .set({ name, phone, shift })
+    .then(() => {
+      Actions.pop();
+      dispatch({ type: EMPLOYEE_SAVED_SUCCESFULLY });
+    });
+});
+
+export const removeEmployee = ({ employeeUid }) => (() => {
+  const { currentUser } = firebase.auth();
+  firebase.database().ref(`users/${currentUser.uid}/employees/${employeeUid}`)
+    .remove()
+    .then(() => { Actions.pop(); });
+});
