@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import { CardSection } from './common';
 
 class EmployeeListItem extends Component {
+
+  rowClicked() {
+    Actions.editEmployee({ employee: this.props.item });
+  }
+
   render() {
       const employee = this.props.item;
       return (
-          <View style={styles.containerStyle}>
+        <TouchableOpacity onPress={this.rowClicked.bind(this)}>
+          <CardSection>
             <Text style={styles.textStyle}>{employee.name}</Text>
-          </View>
+          </CardSection>
+        </TouchableOpacity>
       );
   }
 }
@@ -15,14 +24,7 @@ class EmployeeListItem extends Component {
 const styles = {
   textStyle: {
     fontSize: 18,
-    paddingLeft: 15,
-    paddingTop: 5,
-    paddingBottom: 5
-  },
-  containerStyle: {
-    backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderColor: '#ddd'
+    paddingLeft: 15
   }
 };
 

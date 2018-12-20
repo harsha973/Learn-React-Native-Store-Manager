@@ -9,3 +9,5 @@ export const EMPLOYEE_CREATED = 'employee_created';
 export const CREATE_EMPLOYEE = 'create_employee';
 export const EMPLOYEES_FETCHED_SUCCESSFULLY = 'employees_fectched_successfully';
 export const EMPLOYEES_FETCH_STARTED = 'employee_fetch_started';
+export const EMPLOYEE_SAVED_SUCCESFULLY = 'employee_saved_successfully';
+export const EMPLOYEE_SAVE_STARTED = 'employee_save_started';

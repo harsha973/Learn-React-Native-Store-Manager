@@ -17,11 +17,13 @@ class EmployeeList extends Component {
   }
 
   renderFlatList() {
-    return (<FlatList
-      data={this.props.employees}
-      renderItem={this.renderItem.bind(this)}
-      keyExtractor={(item) => item.uid}
-    />);
+    return (
+      <FlatList
+        data={this.props.employees}
+        renderItem={this.renderItem.bind(this)}
+        keyExtractor={(item) => item.uid}
+      />
+      );
   }
 
   renderSpinner() {
